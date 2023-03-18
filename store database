@@ -1,0 +1,39 @@
+-- create a baseball store database
+
+CREATE TABLE baseball_store 
+(id INTEGER, 
+product TEXT, 
+price INTEGER, 
+team TEXT, 
+color TEXT)
+;
+
+--insert products for baseball store
+
+INSERT INTO baseball_store VALUES (1, "glove", 20, 'angels', 'red');
+INSERT INTO baseball_store VALUES (2, "bat", 50, 'angels', 'black');
+INSERT INTO baseball_store VALUES (3, "helmet", 30, 'reds', 'red');
+INSERT INTO baseball_store VALUES (4, "cleats", 60, 'cubs', 'blue');
+INSERT INTO baseball_store VALUES (5, 'jersey', 25, 'angels', 'red');
+INSERT INTO baseball_store VALUES (6, 'hat', 25, 'angels', 'red');
+INSERT INTO baseball_store VALUES (7, 'hat', 25, 'cubs', 'blue');
+INSERT INTO baseball_store VALUES (8, 'jersey', 25, 'cubs', 'blue');
+INSERT INTO baseball_store VALUES (9, 'bag', 45, 'angels', 'red');
+INSERT INTO baseball_store VALUES (10, 'glove', 25, 'cubs', 'blue');
+INSERT INTO baseball_store VALUES (11, 'helmet', 30, 'cubs', 'blue');
+
+--display all products from database
+SELECT * FROM baseball_store;
+
+--display all products ordered by price
+SELECT * FROM baseball_store 
+ORDER  BY price;
+
+--what is the total price for all products?
+SELECT SUM(price) 
+FROM baseball_store;
+
+--what colors are available and what is the total price per color?
+SELECT color, SUM(price) 
+FROM baseball_store 
+GROUP BY color;
