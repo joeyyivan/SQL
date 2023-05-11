@@ -1,0 +1,89 @@
+/* Create table about players and age*/
+
+CREATE TABLE players 
+(id INTEGER PRIMARY KEY,
+name TEXT,
+age INTEGER);
+
+INSERT INTO players VALUES(1, 'Mike Trout', 31);
+INSERT INTO players VALUES(2, 'Shohei Ohtani', 28);
+INSERT INTO players VALUES(3, 'Vladimir Guerrero', 24);
+INSERT INTO players VALUES(4, 'George Springer', 33);
+INSERT INTO players VALUES(5, 'Manny Machado', 30);
+INSERT INTO players VALUES(6, 'Juan Soto', 24);
+
+
+/* Create table about players' team and position*/
+
+CREATE TABLE stats 
+( id INTEGER PRIMARY KEY,
+player_id INTEGER,
+team TEXT,
+city TEXT,
+position TEXT);
+
+INSERT INTO stats VALUES
+(1, 1, 'Angels', 'Anaheim', 'Outfield');
+INSERT INTO stats VALUES
+(2, 2, 'Angels', 'Anaheim', 'Pitcher');
+INSERT INTO stats VALUES
+(3, 3, 'Blue Jays', 'Toronto', 'Infield');
+INSERT INTO stats VALUES
+(4, 4, 'Blue Jays', 'Toronto', 'Outfield');
+INSERT INTO stats VALUES
+(5, 5, 'Padres', 'San Diego', 'Infield');
+INSERT INTO stats VALUES
+(6, 6, 'Padres', 'San Diego', 'Outfield');
+
+
+/* Create table about teammates*/
+
+CREATE TABLE teammates
+(id INTEGER PRIMARY KEY,
+player1 INTEGER,
+player2 INTEGER);
+
+INSERT INTO teammates VALUES (1, 1, 2);
+INSERT INTO teammates VALUES (2, 3, 4);
+INSERT INTO teammates VALUES (3, 5, 6);
+
+
+/* show players and what team and city they play for*/
+
+SELECT p.name, s.team
+from players p
+join stats s
+on p.id = s.player_id;
+
+
+/* show teamates names and teams they play for*/
+
+SELECT a.name, b.name, s.team
+from teammates t
+join players a
+on a.id = t.player1
+join players b
+on b.id = t.player2
+join stats s
+on s.player_id = a.id;
+
+
+/* Show which players play infield position and avg age*/
+
+SELECT p.name, s.position, p.age
+FROM players p
+JOIN stats s
+on p.id = s.player_id
+where position = 'Infield'
+group by p.name
+order by p.age;
+
+
+/* show average age of team*/
+
+select s.team, avg(p.age) as avg_age
+from players p
+join stats s
+on p.id = s.player_id
+group by team
+order by avg_age; 
