@@ -1,0 +1,368 @@
+create table foods_own (
+ 	  
+	  food_id bigint
+	, item_name varchar(255)
+	, item_quantity int
+	, quantity_unit varchar(255)
+	, storage_type varchar(255)
+	, total_price decimal(14,2)
+	, expiration_date date
+	, food_group varchar(255)
+	, brand_name varchar(255)
+);
+
+
+create table drinks (
+ 	  
+	  drink_id bigint
+	, item_name varchar(255)
+	, item_quantity int
+	, quantity_unit varchar(255)
+	, drink_type varchar(255)
+	, total_price decimal(14,2)
+	, expiration_date date
+	, brand_name varchar(255)
+);
+
+select * from drinks_own
+;
+
+select * from foods_own
+;
+
+create table food_inventory (
+
+	  food_inventory_id bigint
+	, food_item_id bigint
+	, quantity int
+	, inventory_dt date
+	
+);
+
+Create table drinks (
+
+	  drink_id bigint
+	, item_name varchar(255)
+	, storage_type varchar(255)
+	, package_size int
+	, package_size_uom varchar(255)
+	, brand_name varchar(255)
+	, package_price decimal(14,2)
+	, price_last_updated_ts timestamp without time zone
+	
+);
+
+
+Create table foods (
+
+	  food_id bigint
+	, item_name varchar(255)
+	, storage_type varchar(255)
+	, package_size int
+	, package_size_uom varchar(255)
+	, brand_name varchar(255)
+	, package_price decimal(14,2)
+	, price_last_updated_ts timestamp without time zone
+	
+);
+
+
+select * from foods
+;
+
+
+
+
+/* Homework 3.5 */
+
+/*
+How many food items are in the foods table?
+	*/
+
+Select 
+	count(*) 
+from 
+	foods
+;
+	
+
+
+
+/*
+what are all the results for food items?
+	*/
+
+Select
+	  f.food_id
+	, f.item_name
+	, f.storage_type
+	, f.package_size
+	, f.package_size_uom
+	, f.brand_name
+	, f.package_price
+	, f.price_last_updated_ts
+from
+	foods f
+;
+
+
+
+/*
+change package_size_uom field output to something the end user will understand
+	*/
+
+Select
+	  f.food_id
+	, f.item_name
+	, f.storage_type
+	, f.package_size
+	, f.package_size_uom as package_size_unit_of_mesurement
+	, f.brand_name
+	, f.package_price
+	, f.price_last_updated_ts
+from
+	foods f
+;
+
+
+
+/*
+what foods are private label(H-E-B)?
+	*/
+	
+Select
+	  f.food_id
+	, f.item_name
+	, f.storage_type
+	, f.package_size
+	, f.package_size_uom as package_size_unit_of_mesurement
+	, f.brand_name
+	, f.package_price
+	, f.price_last_updated_ts
+from
+	foods f
+where
+	f.brand_name ilike 'h-e-b (private label)'
+;
+
+
+
+/* find all canned items and return new column is_canned_yn
+		*/
+		
+Select
+	  f.food_id
+	, f.item_name
+	, f.storage_type
+	, f.package_size
+	, f.package_size_uom as package_size_unit_of_mesurement
+	, f.brand_name
+	, f.package_price
+	, f.price_last_updated_ts
+	, case when item_name ilike '%canned%' then 'Y' else 'N' end as is_canned_yn
+from
+	foods f
+;
+
+
+/* find all null values in the brand_name column
+		*/
+			
+Select
+	  f.food_id
+	, f.item_name
+	, f.storage_type
+	, f.package_size
+	, f.package_size_uom as package_size_unit_of_mesurement
+	, f.brand_name
+	, f.package_price
+	, f.price_last_updated_ts
+	, case when item_name ilike '%canned%' then 'Y' else 'N' end as is_canned_yn
+from
+	foods f
+where 
+	f.brand_name is null
+	
+	
+
+/* how many items per brand
+		*/
+		
+Select
+	  f.brand_name
+	, count(*) as number_of_products
+from
+	foods f
+group by 
+	f.brand_name
+order by
+	f.brand_name
+
+
+/* Homework 3.6
+	*/
+	
+/* find distinct brand_names
+	*/
+	
+select 
+	distinct
+		f.brand_name
+from
+	foods f
+	
+
+/* find distinct storage types
+	*/
+	
+select 
+	distinct
+		f.storage_type
+from
+	foods f
+
+
+/* update null storage type to unknown
+	*/
+	
+update foods
+	set storage_type = 'unknown'
+	where storage_type is null
+
+
+
+/* return data where id = 13, 15, 17
+	*/
+	
+Select 
+	*
+from
+	foods f
+where
+	   f.food_id in (13,15,17)
+and 
+	f.brand_name ilike 'h-e-b (private label)'
+
+
+/* brand name, storage type, and count of matched
+	*/
+	
+select 
+	  f.brand_name
+	, f.storage_type
+	, count(*) as record_count
+from 
+	foods f
+group by 
+	  f.brand_name
+	, f.storage_type
+
+
+/* what percentage of brands are HEB private label?
+	1. count of heb private label brand records
+	2. count of total brand records
+	3. divide #1 by #2
+		*/
+
+select
+	cast(n.heb_records as decimal(10,2)) / cast(d.total_records as decimal(10,2)) as perc_priv_label
+from	
+	(
+	select 
+		count(*) as heb_records
+	from
+		foods f
+	where
+		f.brand_name ilike 'h-e-b (private label)'
+	) n ---numerator
+	cross join
+					(
+						select 
+							count(*) as total_records
+						from
+							foods f
+					) d ---denominator
+
+
+/* Homework 3.7
+		*/
+
+/* distinct price last updated
+	*/
+
+select 	
+	distinct 
+		f.price_last_updated_ts
+from 
+	foods f
+
+
+select
+	*
+from
+	(
+		Select
+			  f.food_id
+			, f.item_name
+			, f.storage_type
+			, f.package_size
+			, f.package_size_uom as package_size_unit_of_mesurement
+			, f.brand_name
+			, f.package_price
+			, f.price_last_updated_ts at time zone 'America/Los_Angeles' as price_last_updated_pst_ts
+			, current_timestamp
+			, (
+				current_timestamp 
+				- (f.price_last_updated_ts at time zone 'America/Los_Angeles')
+			  ) as days_since_last_price_update
+			, current_date
+			, 
+				current_date
+				- cast(
+					(f.price_last_updated_ts at time zone 'America/Los_Angeles') as date
+						) as days_since_last_price_up
+		from
+			foods f 
+	) f
+where 
+	f.days_since_last_price_up > 30
+	
+	
+	
+/* Homework 3.8
+	*/
+/* produce all results from foods and drinks table
+	*/
+	
+
+Select
+	  f.food_id
+	, null as drink_id
+	, f.item_name
+	, f.storage_type
+	, f.package_size
+	, f.package_size_uom
+	, f.brand_name
+	, f.package_price
+	, f.price_last_updated_ts
+	, 'foods_table' as source_table
+from
+	foods f
+
+union all
+
+Select
+	  null as food_id
+	, d.drink_id
+	, d.item_name
+	, d.storage_type
+	, d.package_size
+	, d.package_size_uom
+	, d.brand_name
+	, d.package_price
+	, d.price_last_updated_ts
+	, 'drinks_table' as source_table
+from
+	drinks d
+			
+				
