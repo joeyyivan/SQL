@@ -1,36 +1,6 @@
-create table foods_own (
- 	  
-	  food_id bigint
-	, item_name varchar(255)
-	, item_quantity int
-	, quantity_unit varchar(255)
-	, storage_type varchar(255)
-	, total_price decimal(14,2)
-	, expiration_date date
-	, food_group varchar(255)
-	, brand_name varchar(255)
-);
 
 
-create table drinks (
- 	  
-	  drink_id bigint
-	, item_name varchar(255)
-	, item_quantity int
-	, quantity_unit varchar(255)
-	, drink_type varchar(255)
-	, total_price decimal(14,2)
-	, expiration_date date
-	, brand_name varchar(255)
-);
-
-select * from drinks_own
-;
-
-select * from foods_own
-;
-
-create table food_inventory (
+create table food_inventories (
 
 	  food_inventory_id bigint
 	, food_item_id bigint
@@ -65,10 +35,6 @@ Create table foods (
 	, price_last_updated_ts timestamp without time zone
 	
 );
-
-
-select * from foods
-;
 
 
 
